@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Math Puzzle Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  .container {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    text-align: center;
+    width: 320px;
+  }
+  h1 {
+    margin: 0 0 20px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    letter-spacing: 1.2px;
+  }
+  .target-banner {
+    background: #6b46c1;
+    padding: 10px 0;
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(107, 70, 193, 0.5);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 60px 60px 60px;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .cell {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    user-select: none;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+  input[type="number"] {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  button {
+    background: #fff;
+    color: #6b46c1;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 12px 0;
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(107, 70, 193, 0.4);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  button:hover {
+    background: #6b46c1;
+    color: #fff;
+    box-shadow: 0 8px 32px rgba(107, 70, 193, 0.7);
+  }
+  #result {
+    margin-top: 25px;
+    font-weight: 600;
+    font-size: 18px;
+    min-height: 24px;
+  }
+</style>
+</head>
+<!-- ... same head and style ... -->
+
+<body>
+    <div class="container">
+      <h1>Math Puzzle</h1>
+      <div class="target-banner" aria-live="polite" aria-atomic="true">Target Number: 12</div>
+      <div class="grid" aria-label="Math puzzle grid">
+        <div class="cell"><input type="number" id="cell1" placeholder="?" min="1" max="9" /></div>
+        <div class="cell" aria-label="Plus operator">+</div>
+        <div class="cell"><input type="number" id="cell3" placeholder="?" min="1" max="9" /></div>
+  
+        <div class="cell" aria-label="Multiply operator">*</div>
+        <div class="cell" aria-label="Minus operator">-</div>
+        <div class="cell" aria-label="Plus operator">+</div>
+  
+        <div class="cell"><input type="number" id="cell7" placeholder="?" min="1" max="9" /></div>
+        <div class="cell" aria-label="Multiply operator">*</div>
+        <div class="cell"><input type="number" id="cell9" placeholder="?" min="1" max="9" /></div>
+      </div>
+      <button onclick="checkSolution()">Check</button>
+      <p id="result" role="alert" aria-live="polite"></p>
+    </div>
+  
+  <script>
+    const target = 12;
+    const ops = {
+      '+': (a, b) => a + b,
+      '-': (a, b) => a - b,
+      '*': (a, b) => a * b,
+      '/': (a, b) => b !== 0 ? a / b : null
+    };
+  
+    // Sanitize inputs: Allow only digits 1-9
+    function sanitizeInput(e) {
+      // Allow control keys: backspace, delete, arrows etc.
+      const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+      if (allowedKeys.includes(e.key)) return;
+  
+      // Prevent if not a digit 1-9
+      if (!/[1-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    }
+  
+    // Block pasting invalid content
+    function handlePaste(e) {
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      if (!/^[1-9]$/.test(paste)) {
+        e.preventDefault();
+      }
+    }
+  
+    // Attach listeners to inputs
+    ['cell1', 'cell3', 'cell7', 'cell9'].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('keypress', sanitizeInput);
+      el.addEventListener('paste', handlePaste);
+    });
+  
+    function evaluate(a, op, b) {
+      return ops[op](a, b);
+    }
+  
+    function checkSolution() {
+      const cell1 = parseInt(document.getElementById("cell1").value);
+      const cell3 = parseInt(document.getElementById("cell3").value);
+      const cell7 = parseInt(document.getElementById("cell7").value);
+      const cell9 = parseInt(document.getElementById("cell9").value);
+  
+      if ([cell1, cell3, cell7, cell9].some(isNaN)) {
+        document.getElementById("result").textContent = "Please enter all four numbers (1-9).";
+        return;
+      }
+  
+      const eq1 = evaluate(cell1, '+', cell3);
+      const eq2 = evaluate(cell1, '*', cell7);
+      const eq3 = evaluate(cell1, '-', cell9);
+      const eq4 = evaluate(cell3, '+', cell9);
+      const eq5 = evaluate(cell7, '*', cell9);
+  
+      if ([eq1, eq2, eq3, eq4, eq5].every(eq => Math.round(eq * 100) / 100 === target)) {
+        document.getElementById("result").textContent = "✅ Correct! All equations equal " + target;
+      } else {
+        document.getElementById("result").textContent = "❌ Try again. Not all equations match the target.";
+      }
+    }
+  </script>
+  </body>
+  </html>
+  
+</html>
