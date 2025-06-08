@@ -21,6 +21,7 @@ body {
   width: 320px;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -109,90 +110,137 @@ button:hover {
 }
 
 #how-to-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background-color: #6b46c1;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #6b46c1;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  touch-action: manipulation;
+}
+
+#instructions {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#instructions > div {
+  background: #f9f9ff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: #444;
+}
+
+#instructions-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #6b46c1;
+}
+
+#instructions-desc {
+  font-size: 15px;
+  color: #444;
+}
+
+#instructions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+#instructions ol li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+#instructions p {
+  margin-top: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+#instructions button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #6b46c1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#instructions button:hover {
+  background: #7c59db;
+}
+
+/* MOBILE RESPONSIVE CHANGES */
+@media (max-width: 480px) {
+  body {
+    height: auto; /* let page grow */
+    padding: 20px 0;
   }
   
-  #instructions {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6); /* dark background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+  .container {
+    width: 90vw;
+    padding: 30px 20px;
   }
-  
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+
+  .cell {
+    font-size: 1.6rem;
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+  input[type="number"] {
+    font-size: 20px;
+    border-radius: 8px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 14px 0;
+  }
+
+  #how-to-button {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
   #instructions > div {
-    background: #f9f9ff;
-    padding: 20px 30px;
-    border-radius: 12px;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    color: #444;
+    max-width: 90vw;
+    max-height: 85vh;
+    padding: 15px 20px;
   }
-  
-  
-  #instructions-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 16px;
-    color: #6b46c1;
-  }
-  
-  #instructions-desc {
-    font-size: 15px;
-    color: #444;
-  }
-  
-  #instructions ol {
-    padding-left: 20px;
-    margin: 0;
-  }
-  
-  #instructions ol li {
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-  
-  #instructions p {
-    margin-top: 10px;
-    font-weight: 500;
-    line-height: 1.4;
-  }
-  
-  #instructions button {
-    margin-top: 20px;
-    padding: 8px 16px;
-    background-color: #6b46c1;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  
-  #instructions button:hover {
-    background: #7c59db;
-  }
-  
+}
